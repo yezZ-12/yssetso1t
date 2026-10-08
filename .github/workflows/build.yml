@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout repository
@@ -16,10 +16,18 @@ jobs:
           bash -c "$(curl -fsSL https://githubusercontent.com)"
           echo "THEOS=~/theos" >> $GITHUB_ENV
 
+      - name: Download iOS SDK
+        run: |
+          mkdir -p ~/theos/sdks
+          curl -L https://github.com -o ~/theos/sdks/iPhoneOS16.5.sdk.tar.xz
+          tar -xf ~/theos/sdks/iPhoneOS16.5.sdk.tar.xz -C ~/theos/sdks/
+          rm ~/theos/sdks/iPhoneOS16.5.sdk.tar.xz
+
       - name: Compile Dylib
         run: |
+          export THEOS=~/theos
           make package FINALPACKAGE=1
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
