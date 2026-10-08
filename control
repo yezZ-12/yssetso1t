@@ -1,0 +1,9 @@
+Package: com.softbox.iosmenu
+Name: SoftboxiOSMenu
+Depends: mobilesubstrate
+Version: 1.0
+Architecture: iphoneos-arm
+Description: KeyAuth Menu for Free Fire
+Maintainer: yezZ-12
+Author: yezZ-12
+Section: Tweaks
