@@ -16,21 +16,14 @@ jobs:
           bash -c "$(curl -fsSL https://githubusercontent.com)"
           echo "THEOS=~/theos" >> $GITHUB_ENV
 
-      - name: Download iOS SDK
-        run: |
-          mkdir -p ~/theos/sdks
-          curl -L https://github.com -o ~/theos/sdks/iPhoneOS16.5.sdk.tar.xz
-          tar -xf ~/theos/sdks/iPhoneOS16.5.sdk.tar.xz -C ~/theos/sdks/
-          rm ~/theos/sdks/iPhoneOS16.5.sdk.tar.xz
-
       - name: Compile Dylib
         run: |
           export THEOS=~/theos
-          make package FINALPACKAGE=1
-        continue-on-error: false
+          make package FINALPACKAGE=1 TARGET=iphone:clang:latest:14.0
+        continue-on-error: true
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: iOS-Menu-Dylib
-          path: .theos/obj/*.dylib
+          path: "**/obj/*.dylib"
